@@ -94,6 +94,15 @@ public abstract class TomcatUtil {
 			}
 			URL url = new URL(resource);
 			String path = "/META-INF/resources";
+
+			// check directory exists
+			if (resource.startsWith("file:")) {
+				String dir = resource.substring("file:".length());
+				if (!new File(dir, path).exists()) {
+					return;
+				}
+			}
+
 			context.getResources().createWebResourceSet(ResourceSetType.RESOURCE_JAR, "/", url, path);
 		} catch (Exception ex) {
 			// Ignore (probably not a directory)
