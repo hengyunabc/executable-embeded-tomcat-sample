@@ -31,6 +31,8 @@ http://localhost:8080/test.jsp
 
 http://localhost:8080/hello
 
+http://localhost:8080/annotation
+
 ## How to migrate from a webapp project
 
 It is very simple.

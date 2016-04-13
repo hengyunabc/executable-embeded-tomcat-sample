@@ -5,8 +5,13 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.apache.catalina.Context;
+import org.apache.catalina.Host;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
+
+import io.github.hengyunabc.tomcat.EmbededContextConfig;
+import io.github.hengyunabc.tomcat.EmbededStandardJarScanner;
+import io.github.hengyunabc.tomcat.TomcatUtil;
 
 /**
  * 
@@ -30,14 +35,15 @@ public class Main {
 		tomcat.setPort(port);
 		tomcat.setHostname(hostName);
 
-		Context context = tomcat.addWebapp(contextPath, contextDocBase);
+		Host host = tomcat.getHost();
+		Context context = tomcat.addWebapp(host, contextPath, contextDocBase, new EmbededContextConfig());
+
+		context.setJarScanner(new EmbededStandardJarScanner());
 
 		ClassLoader classLoader = Main.class.getClassLoader();
 
 		// add /WEB-INF path to Tomcat WebResourceRoot
 		TomcatUtil.addWebXmlResource(context, classLoader);
-		// add all /META-INF/resources paths to Tomcat WebResourceRoot
-		TomcatUtil.addClasspathResources(classLoader, context);
 
 		context.setParentClassLoader(classLoader);
 
