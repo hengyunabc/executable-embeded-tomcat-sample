@@ -12,9 +12,10 @@ import org.apache.catalina.startup.Tomcat;
 import io.github.hengyunabc.tomcat.EmbededContextConfig;
 import io.github.hengyunabc.tomcat.EmbededStandardJarScanner;
 import io.github.hengyunabc.tomcat.TomcatUtil;
+import io.github.hengyunabc.tomcat.WebXmlMountListener;
 
 /**
- * 
+ *
  * @author hengyunabc
  *
  */
@@ -41,11 +42,10 @@ public class Main {
 		context.setJarScanner(new EmbededStandardJarScanner());
 
 		ClassLoader classLoader = Main.class.getClassLoader();
-
-		// add /WEB-INF path to Tomcat WebResourceRoot
-		TomcatUtil.addWebXmlResource(context, classLoader);
-
 		context.setParentClassLoader(classLoader);
+
+		// context load WEB-INF/web.xml from classpath
+		context.addLifecycleListener(new WebXmlMountListener());
 
 		tomcat.start();
 		tomcat.getServer().await();
