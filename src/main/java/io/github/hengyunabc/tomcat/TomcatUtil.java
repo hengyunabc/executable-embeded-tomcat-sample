@@ -2,6 +2,7 @@ package io.github.hengyunabc.tomcat;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  *
@@ -11,9 +12,7 @@ import java.io.IOException;
 public abstract class TomcatUtil {
 
 	public static File createTempDir(String prefix, int port) throws IOException {
-		File tempDir = File.createTempFile(prefix + ".", "." + port);
-		tempDir.delete();
-		tempDir.mkdir();
+		File tempDir = Files.createTempDirectory(prefix + "." + "." + port).toFile();
 		tempDir.deleteOnExit();
 		return tempDir;
 	}
